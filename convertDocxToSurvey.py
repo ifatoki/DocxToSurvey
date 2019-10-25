@@ -26,9 +26,12 @@ def convertCurrentUnit(currentUnit):
   def radioTableTransform(options):
     returnArray = []
     i = 0
-    headers = options.pop()[4:-1]
-    headers = re.split('[,;]\s\d\.\s', headers)
-    postscript = '\t'.join([ '[]' for header in headers ])
+    if re.findall('[.+]', options[-1]):
+      headers = options.pop()[4:-1]
+      headers = re.split('[,;]\s\d\.\s', headers)
+    else:
+      headers = ['values']
+    postscript = '\t'.join([ '()' for header in headers ])
     returnArray = [ ' {}'.format('\t'.join(headers)) ]
     while i < len(options):
       returnArray = [*returnArray, '{}\t{}'.format(options[i], postscript)]
@@ -38,8 +41,11 @@ def convertCurrentUnit(currentUnit):
   def checkBoxTableTransform(options):
     returnArray = []
     i = 0
-    headers = options.pop()[4:-1]
-    headers = re.split('[,;]?\s\d\.\s', headers)
+    if re.findall('[.+]', options[-1]):
+      headers = options.pop()[4:-1]
+      headers = re.split('[,;]\s\d\.\s', headers)
+    else:
+      headers = ['values']
     postscript = '\t'.join([ '[]' for header in headers ])
     returnArray = [ ' {}'.format('\t'.join(headers)) ]
     while i < len(options):
@@ -50,8 +56,11 @@ def convertCurrentUnit(currentUnit):
   def textTableTransform(options):
     returnArray = []
     i = 0
-    headers = options.pop()[4:-1]
-    headers = re.split('[,;]\s\d\.\s', headers)
+    if re.findall('[.+]', options[-1]):
+      headers = options.pop()[4:-1]
+      headers = re.split('[,;]\s\d\.\s', headers)
+    else:
+      headers = ['values']
     postscript = '\t'.join([ '_' for header in headers ])
     returnArray = [ ' {}'.format('\t'.join(headers)) ]
     while i < len(options):
@@ -62,9 +71,7 @@ def convertCurrentUnit(currentUnit):
   output = []
   i = 0
   while i < len(currentUnit):
-    line = currentUnit[i]
-    line = re.sub('\[.*\]', '', line)
-    # if len(output)>0: output[0] = '{}\n'.format(output[0])
+    line = re.sub('\[.*\]', '', currentUnit[i])
     if line.lower().endswith('(newpage)'):
       if len(output)>0: output[0] = '{}\n'.format(output[0])
       output = [*output, newPageTransform(line)]
