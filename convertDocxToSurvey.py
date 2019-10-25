@@ -1,6 +1,12 @@
 import docx
 import re
+import argparse
 from datetime import datetime
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--source-file-path', action='store', required=True)
+parser.add_argument('--output-file-path', action='store', required=False)
+args = parser.parse_args()
 
 def convertCurrentUnit(currentUnit):
   def newPageTransform(text):
@@ -74,10 +80,12 @@ def convertCurrentUnit(currentUnit):
 
   return output
 
-def readfile(filename):
-  doc = docx.Document(filename)
+def main():
+  doc = docx.Document(args.source_file_path)
   currentUnit = []
-  outputFile = open('surveygizmo_output_{}.txt'.format(datetime.now().strftime('%d%m%Y%H%M')), 'w')
+  outputFilePath = args.output_file_path
+  if not outputFilePath: outputFilePath = '{}_output_{}.txt'.format(args.source_file_path[:-5],datetime.now().strftime('%d%m%Y%H%M'))
+  outputFile = open(outputFilePath, 'w')
   for paragraph in doc.paragraphs:
     if paragraph.text.strip() == '':
       if (len(currentUnit)>0):
@@ -88,4 +96,4 @@ def readfile(filename):
       currentUnit = [*currentUnit, paragraph.text.strip()]
   outputFile.close()
 
-readfile('questionnaire_sample.docx')
+main()
