@@ -22,46 +22,16 @@ def convertCurrentUnit(currentUnit):
     for option in options:
       returnArray = [*returnArray, '[] {}'.format(option)]
     return '\n'.join(returnArray)
-  
-  def radioTableTransform(options):
-    returnArray = []
-    i = 0
-    if re.findall('[.+]', options[-1]):
-      headers = options.pop()[4:-1]
-      headers = re.split('[,;]\s\d\.\s', headers)
-    else:
-      headers = ['values']
-    postscript = '\t'.join([ '()' for header in headers ])
-    returnArray = [ ' {}'.format('\t'.join(headers)) ]
-    while i < len(options):
-      returnArray = [*returnArray, '{}\t{}'.format(options[i], postscript)]
-      i += 1
-    return '\n'.join(returnArray)
 
-  def checkBoxTableTransform(options):
+  def tableTransform(placeholder, options):
     returnArray = []
     i = 0
     if re.findall('[.+]', options[-1]):
       headers = options.pop()[4:-1]
-      headers = re.split('[,;]\s\d\.\s', headers)
+      headers = re.split('[,;]?\s\d\.\s', headers)
     else:
       headers = ['values']
-    postscript = '\t'.join([ '[]' for header in headers ])
-    returnArray = [ ' {}'.format('\t'.join(headers)) ]
-    while i < len(options):
-      returnArray = [*returnArray, '{}\t{}'.format(options[i], postscript)]
-      i += 1
-    return '\n'.join(returnArray)
-
-  def textTableTransform(options):
-    returnArray = []
-    i = 0
-    if re.findall('[.+]', options[-1]):
-      headers = options.pop()[4:-1]
-      headers = re.split('[,;]\s\d\.\s', headers)
-    else:
-      headers = ['values']
-    postscript = '\t'.join([ '_' for header in headers ])
+    postscript = '\t'.join([ placeholder for header in headers ])
     returnArray = [ ' {}'.format('\t'.join(headers)) ]
     while i < len(options):
       returnArray = [*returnArray, '{}\t{}'.format(options[i], postscript)]
@@ -89,13 +59,13 @@ def convertCurrentUnit(currentUnit):
       output = ['{} {}'.format(' '.join(output), line[:-11].strip()).strip(), checkBoxTransform(currentUnit[i+1:])]
       break
     elif line.lower().endswith('(radio table)'):
-      output = ['{} {}'.format(' '.join(output), line[:-13].strip()).strip(), radioTableTransform(currentUnit[i+1:])]
+      output = ['{} {}'.format(' '.join(output), line[:-13].strip()).strip(), tableTransform('()', currentUnit[i+1:])]
       break
     elif line.lower().endswith('(checkbox table)'):
-      output = ['{} {}'.format(' '.join(output), line[:-16].strip()).strip(), checkBoxTableTransform(currentUnit[i+1:])]
+      output = ['{} {}'.format(' '.join(output), line[:-16].strip()).strip(), tableTransform('[]', currentUnit[i+1:])]
       break
     elif line.lower().endswith('(text table)'):
-      output = ['{} {}'.format(' '.join(output), line[:-12].strip()).strip(), textTableTransform(currentUnit[i+1:])]
+      output = ['{} {}'.format(' '.join(output), line[:-12].strip()).strip(), tableTransform('_', currentUnit[i+1:])]
       break
     else:
       output = [*output, line]
