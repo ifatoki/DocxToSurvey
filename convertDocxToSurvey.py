@@ -1,5 +1,6 @@
 import docx
 import re
+from datetime import datetime
 
 def convertCurrentUnit(currentUnit):
   def newPageTransform(text):
@@ -76,13 +77,15 @@ def convertCurrentUnit(currentUnit):
 def readfile(filename):
   doc = docx.Document(filename)
   currentUnit = []
+  outputFile = open('surveygizmo_output_{}.txt'.format(datetime.now().strftime('%d%m%Y%H%M')), 'w')
   for paragraph in doc.paragraphs:
     if paragraph.text.strip() == '':
       if (len(currentUnit)>0):
-        print('\n'.join(convertCurrentUnit(currentUnit)))
-        print('')
+        outputFile.write('\n'.join(convertCurrentUnit(currentUnit)))
+        outputFile.write('\n\n')
       currentUnit = []
     else:
       currentUnit = [*currentUnit, paragraph.text.strip()]
+  outputFile.close()
 
 readfile('questionnaire_sample.docx')
