@@ -53,25 +53,25 @@ def convertCurrentUnit(currentUnit):
       if len(output)>0: output[0] = '{}\n'.format(output[0])
       output = [*output, newPageTransform(line)]
       break
-    elif line.lower().endswith('(radio button)'):
+    elif line.lower().endswith('(rb)'):
       output = ['{} {}'.format(' '.join(output), line[:-14].strip()).strip(), radioButtonTransform(currentUnit[i+1:])]
       break
-    elif line.lower().endswith('(text box)'):
+    elif line.lower().endswith('(tb)'):
       output = [*output, textBoxTransform(line)]
       break
-    elif line.lower().endswith('(essay)'):
+    elif line.lower().endswith('(e)'):
       output = [*output, essayTransform(line)]
       break
-    elif line.lower().endswith('(check box)'):
+    elif line.lower().endswith('(cb)'):
       output = ['{} {}'.format(' '.join(output), line[:-11].strip()).strip(), checkBoxTransform(currentUnit[i+1:])]
       break
-    elif line.lower().endswith('(radio table)'):
+    elif line.lower().endswith('(rt)'):
       output = ['{} {}'.format(' '.join(output), line[:-13].strip()).strip(), tableTransform('()', currentUnit[i+1:])]
       break
-    elif line.lower().endswith('(checkbox table)'):
+    elif line.lower().endswith('(ct)'):
       output = ['{} {}'.format(' '.join(output), line[:-16].strip()).strip(), tableTransform('[]', currentUnit[i+1:])]
       break
-    elif line.lower().endswith('(text table)'):
+    elif line.lower().endswith('(tt)'):
       output = ['{} {}'.format(' '.join(output), line[:-12].strip()).strip(), tableTransform('_', currentUnit[i+1:])]
       break
     else:
