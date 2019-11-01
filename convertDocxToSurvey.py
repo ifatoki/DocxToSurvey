@@ -88,11 +88,12 @@ def main():
   outputFile = open(outputFilePath, 'w')
   for paragraph in doc.paragraphs:
     if paragraph.text.strip() == '':
-      if (len(currentUnit)>0):
+      if (len(currentUnit)>0 ):
+        outputFile.write('::NewPage::\n\n')
         outputFile.write('\n'.join(convertCurrentUnit(currentUnit)))
         outputFile.write('\n\n')
       currentUnit = []
-    else:
+    elif not (len(paragraph.runs)>0 and paragraph.runs[0].underline):
       currentUnit = [*currentUnit, paragraph.text.strip()]
   outputFile.close()
 
