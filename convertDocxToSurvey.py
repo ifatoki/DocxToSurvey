@@ -19,10 +19,10 @@ def convertCurrentUnit(currentUnit):
     return '\n'.join(returnArray)
 
   def textBoxTransform(text):
-    return '{}\n_'.format(text[:-10].strip())
+    return '{}\n_'.format(text[:-4].strip())
 
   def essayTransform(text):
-    return '{}\n_\n_'.format(text[:-7].strip())
+    return '{}\n_\n_'.format(text[:-3].strip())
 
   def checkBoxTransform(options):
     returnArray = []
@@ -54,7 +54,7 @@ def convertCurrentUnit(currentUnit):
       output = [*output, newPageTransform(line)]
       break
     elif line.lower().endswith('(rb)'):
-      output = ['{} {}'.format(' '.join(output), line[:-14].strip()).strip(), radioButtonTransform(currentUnit[i+1:])]
+      output = ['{} {}'.format(' '.join(output), line[:-4].strip()).strip(), radioButtonTransform(currentUnit[i+1:])]
       break
     elif line.lower().endswith('(tb)'):
       output = [*output, textBoxTransform(line)]
@@ -63,16 +63,16 @@ def convertCurrentUnit(currentUnit):
       output = [*output, essayTransform(line)]
       break
     elif line.lower().endswith('(cb)'):
-      output = ['{} {}'.format(' '.join(output), line[:-11].strip()).strip(), checkBoxTransform(currentUnit[i+1:])]
+      output = ['{} {}'.format(' '.join(output), line[:-4].strip()).strip(), checkBoxTransform(currentUnit[i+1:])]
       break
     elif line.lower().endswith('(rt)'):
-      output = ['{} {}'.format(' '.join(output), line[:-13].strip()).strip(), tableTransform('()', currentUnit[i+1:])]
+      output = ['{} {}'.format(' '.join(output), line[:-4].strip()).strip(), tableTransform('()', currentUnit[i+1:])]
       break
     elif line.lower().endswith('(ct)'):
-      output = ['{} {}'.format(' '.join(output), line[:-16].strip()).strip(), tableTransform('[]', currentUnit[i+1:])]
+      output = ['{} {}'.format(' '.join(output), line[:-4].strip()).strip(), tableTransform('[]', currentUnit[i+1:])]
       break
     elif line.lower().endswith('(tt)'):
-      output = ['{} {}'.format(' '.join(output), line[:-12].strip()).strip(), tableTransform('_', currentUnit[i+1:])]
+      output = ['{} {}'.format(' '.join(output), line[:-4].strip()).strip(), tableTransform('_', currentUnit[i+1:])]
       break
     else:
       output = [*output, line]
