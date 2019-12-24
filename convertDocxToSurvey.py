@@ -15,7 +15,8 @@ def convertCurrentUnit(currentUnit):
   def radioButtonTransform(options):
     returnArray = []
     for option in options:
-      returnArray = [*returnArray, '() {}'.format(option)]
+      stripedOption = re.sub('\[.*\]', '', option)
+      returnArray = [*returnArray, '() {}'.format(stripedOption)]
     return '\n'.join(returnArray)
 
   def textBoxTransform(text):
@@ -27,7 +28,8 @@ def convertCurrentUnit(currentUnit):
   def checkBoxTransform(options):
     returnArray = []
     for option in options:
-      returnArray = [*returnArray, '[] {}'.format(option)]
+      stripedOption = re.sub('\[.*\]', '', option)
+      returnArray = [*returnArray, '[] {}'.format(stripedOption)]
     return '\n'.join(returnArray)
 
   def tableTransform(placeholder, options):
@@ -41,7 +43,8 @@ def convertCurrentUnit(currentUnit):
     postscript = '\t'.join([ placeholder for header in headers ])
     returnArray = [ ' {}'.format('\t'.join(headers)) ]
     while i < len(options):
-      returnArray = [*returnArray, '{}\t{}'.format(options[i], postscript)]
+      option = re.sub('\[.*\]', '', options[i])
+      returnArray = [*returnArray, '{}\t{}'.format(option, postscript)]
       i += 1
     return '\n'.join(returnArray)
 
