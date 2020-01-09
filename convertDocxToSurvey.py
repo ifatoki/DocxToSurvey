@@ -37,7 +37,7 @@ def convertCurrentUnit(currentUnit):
     i = 0
     if re.findall('[.+]', options[-1]) or re.findall('[:+]', options[-1]):
       headers = options.pop()[4:-1]
-      headers = re.split('[,;]?\s\d[.:]?\s', headers)
+      headers = re.split('[,;]\s\d[.:]\s', headers)
     else:
       headers = ['values']
     postscript = '\t'.join([ placeholder for header in headers ])
